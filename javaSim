@@ -1,0 +1,98 @@
+public char[] suits = {'C', 'D', 'H', 'S'};
+public char[] vals = {'A', '2', '3', '4', '5', '6', '7', '8', '9', 'T', 'J', 'Q', 'K''};
+
+// Card object
+public class Card {
+  int suit;
+  int val;
+  Card(int iSuit, int iVal) {
+    suit = iSuit;
+    val = iVal;
+  }
+  void tell() {
+    print("" + vals[val] + suits[suit]);
+  }
+}
+
+// Deck object
+public class Deck {
+  Card[] cards = new Card[52];
+  int base = 0;
+  Deck() {
+    reset();
+    randomize();
+  }
+  
+  // reset
+  void reset() {
+    for (int i = 0; i < cards.length; i++) {
+      cards[i] = new Card(i / 13, i % 13);
+    }
+  }
+  
+  // randomize
+  void randomize() {
+    int sSuit;
+    int sVal;
+    for (int i = 0; i < cards.length; i++) {
+      // random
+      int r = int(random(cards.length));
+      sSuit = cards[r].suit;
+      sVal = cards[r].val;
+      cards[r].suit = cards[i].suit;
+      cards[r].val = cards[i].val;
+      cards[i].suit = sSuit;
+      cards[i].val = sVal;
+    }
+  }
+  
+  // tell
+  void tell() {
+    for (int i = 0; i < cards.length; i++) {
+      cards[i].tell();
+      print(" ");
+    }
+    println();
+  }
+  Card get_card() {
+    if (base < cards.length) {
+      return(cards[base++]);
+    }
+    return null;
+  }
+}
+ 
+// Hand object
+public class Hand {
+  Card[] cards;
+  Hand(Deck theDeck) {
+    cards = new Card[5];
+    for (int i = 0; i < cards.length; i++) {
+      cards[i] = theDeck.get_card();
+    }
+  }
+  void tell() {
+    for (int i = 0; i < cards.length; i++) {
+      cards[i].tell();
+      print(" ");
+    }
+    println();
+  }
+}
+ 
+ 
+ 
+Deck my_deck = new Deck();
+ 
+public void setup() {
+  size(400, 400);
+ 
+  my_deck.tell();
+  println();
+ 
+  Hand a_hand = new Hand( my_deck );
+  a_hand.tell();
+  println();
+  Hand b_hand = new Hand( my_deck );
+  b_hand.tell();
+}
